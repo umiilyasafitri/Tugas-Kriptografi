@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Affine Cipher Simulator</title>
+<h1 align="center">TUGAS 4 MATA KULIAH KRIPTOGRAFI DAN KEAMANAN SISTEM APLIKASI GUI (GRAPHIC USER INTERFACE)</h1>
+<h2 align="center">OLEH : UMI ILYA SAFITRI ( NIM = C2C02139 )</h2>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-image: url("bglaut.jpeg");
+        background-color: blue;
+        background-repeat: no-repeat;
+        background-attachment: fixed;  
+        background-size: cover;
+        
+    }
+    .container {
+        margin: auto;
+        width: 50%;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .input-group {
+        margin-bottom: 10px;
+    }
+    .input-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    .input-group input[type="text"], .input-group input[type="number"] {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+    button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Affine Cipher Simulator</h2>
+    <div class="input-group">
+        <label for="plaintext">Plaintext:</label>
+        <input type="text" id="plaintext" placeholder="Enter plaintext...">
+    </div>
+    <div class="input-group">
+        <label for="key">Key:</label>
+        <input type="number" id="key" placeholder="Enter key...">
+    </div>
+    <div class="input-group">
+        <label for="ciphertext">Ciphertext:</label>
+        <input type="text" id="ciphertext" readonly>
+    </div>
+    <div class="input-group">
+        <label for="plaintext-back">Plaintext (Decrypted):</label>
+        <input type="text" id="plaintext-back" readonly>
+    </div>
+    <button onclick="encrypt()">Encrypt</button>
+    <button onclick="decrypt()">Decrypt</button>
+    <button onclick="showEncryptionKey()">Show Encryption Key</button>
+    <button onclick="showDecryptionKey()">Show Decryption Key</button>
+    <button onclick="clearText()">Clear</button>
+</div>
+
+<script>
+function encrypt() {
+    var plaintext = document.getElementById("plaintext").value;
+    var key = parseInt(document.getElementById("key").value);
+    var ciphertext = "";
+    for (var i = 0; i < plaintext.length; i++) {
+        var char = plaintext[i];
+        if (/[a-zA-Z]/.test(char)) {
+            var charCode = char.charCodeAt(0);
+            if (charCode >= 65 && charCode <= 90) {
+                ciphertext += String.fromCharCode(((charCode - 65) * key) % 26 + 65);
+            } else if (charCode >= 97 && charCode <= 122) {
+                ciphertext += String.fromCharCode(((charCode - 97) * key) % 26 + 97);
+            }
+        } else {
+            ciphertext += char;
+        }
+    }
+    document.getElementById("ciphertext").value = ciphertext;
+}
+
+function decrypt() {
+    var ciphertext = document.getElementById("ciphertext").value;
+    var key = parseInt(document.getElementById("key").value);
+    var plaintext = "";
+    var modInverse = getModInverse(key, 26);
+    for (var i = 0; i < ciphertext.length; i++) {
+        var char = ciphertext[i];
+        if (/[a-zA-Z]/.test(char)) {
+            var charCode = char.charCodeAt(0);
+            if (charCode >= 65 && charCode <= 90) {
+                plaintext += String.fromCharCode(((charCode - 65) * modInverse) % 26 + 65);
+            } else if (charCode >= 97 && charCode <= 122) {
+                plaintext += String.fromCharCode(((charCode - 97) * modInverse) % 26 + 97);
+            }
+        } else {
+            plaintext += char;
+        }
+    }
+    document.getElementById("plaintext-back").value = plaintext;
+}
+
+function getModInverse(a, m) {
+    for (var x = 1; x < m; x++) {
+        if ((a * x) % m == 1) {
+            return x;
+        }
+    }
+    return NaN;
+}
+
+function showEncryptionKey() {
+    var key = parseInt(document.getElementById("key").value);
+    alert("Encryption Key: " + key);
+}
+
+function showDecryptionKey() {
+    var key = parseInt(document.getElementById("key").value);
+    var modInverse = getModInverse(key, 26);
+    if (!isNaN(modInverse)) {
+        alert("Decryption Key: " + modInverse);
+    } else {
+        alert("Invalid key. Decryption key does not exist.");
+    }
+}
+
+function clearText() {
+    document.getElementById("plaintext").value = "";
+    document.getElementById("key").value = "";
+    document.getElementById("ciphertext").value = "";
+    document.getElementById("plaintext-back").value = "";
+}
+</script>
+
+</body>
+</html>

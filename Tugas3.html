@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Encryption App</title>
+    <h1 align="center">TUGAS 3 MATA KULIAH KRIPTOGRAFI DAN KEAMANAN SISTEM APLIKASI VIGENERE CHIPER</h1>
+    <h2 align="center">OLEH : </h2>
+    <h3 align="center">UMI ILYA SAFITRI ( NIM = C2C02139 )</h3>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            margin: 10px;
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 30%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button:active {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+
+<body>
+    <label for="plaintext">Plaintext:</label>
+    <input type="text" id="plaintext">
+
+    <label for="key">Key:</label>
+    <input type="text" id="key">
+
+    <button onclick="encrypt()">Encrypt</button>
+
+    <label for="ciphertext">Ciphertext:</label>
+    <input type="text" id="ciphertext" readonly>
+
+    <button onclick="decrypt()">Decrypt</button>
+
+    <label for="decrypted">Decrypted:</label>
+    <input type="text" id="decrypted" readonly>
+
+    <button onclick="clearFields()">Clear</button>
+
+    <script>
+        function encrypt() {
+            var plaintext = document.getElementById("plaintext").value;
+            var key = document.getElementById("key").value;
+            var ciphertext = plaintext + key; // Example encryption (substitute with your encryption algorithm)
+            document.getElementById("ciphertext").value = ciphertext;
+        }
+
+        function decrypt() {
+            var ciphertext = document.getElementById("ciphertext").value;
+            var key = document.getElementById("key").value;
+            var plaintext = ciphertext.slice(0, -key.length); // Example decryption (substitute with your decryption algorithm)
+            document.getElementById("decrypted").value = plaintext;
+        }
+
+        function clearFields() {
+            document.getElementById("plaintext").value = "";
+            document.getElementById("key").value = "";
+            document.getElementById("ciphertext").value = "";
+            document.getElementById("decrypted").value = "";
+        }
+    </script>
+</body>
+
+</html>
